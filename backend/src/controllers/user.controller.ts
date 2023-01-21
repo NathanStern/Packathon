@@ -1,42 +1,26 @@
 import express, { Request, Response } from 'express';
 import { QueryResult } from 'pg';
 import { db } from '../db';
+import * as jwt from 'jsonwebtoken';
+import { DecodedToken } from '../interfaces/DecodedToken';
 
-interface LoginInfo {
-    username?: string;
-    email?: string;
-    password: string;
-};
+export const get_user_profile = (req: Request, res: Response) => {
+    const auth_token = req.headers.authorization.replace("Bearer ", "");
 
-export const login = async (req: Request, res: Response) => {
-    const login_request: LoginInfo = req.body;
+    jwt.verify(auth_token, process.env.jwtsecret, (err, decoded: DecodedToken) => {
+        if (err || decoded.scope !== "user") {
+            res.status(401).send({status: 401, message: "Invalid auth token", err: err.message});
+            return;
+        }
 
-    if (!login_request.password || (!login_request.email && !login_request.username)) {
-        res.status(400).send({status: 400, message: "Invalid request"});
-        return;
-    }
+        db.query('SELECT username, email FROM users WHERE id=$1', [decoded.id])
+            .then((data: QueryResult) => {
+                res.send({status: 200, message: "Success", data: data.rows[0]});
+            })
+            .catch((e: Error) => {
+                console.log(e.message);
+                res.status(500).send({status: 500, message: `Internal server error: ${e.message}`});
+            });
+    });
 
-    let query: string;
-    let params: string[];
-
-    if (login_request.email) {
-        query = 'SELECT username, email FROM users WHERE email=$1 AND password=$2';
-        params = [login_request.email, login_request.password];
-    } else {
-        query = 'SELECT username, email FROM users WHERE username=$1 AND password=$2';
-        params = [login_request.username, login_request.password];
-    }
-
-    db.query(query, params)
-        .then((data: QueryResult) => {
-            if (data.rowCount === 0) {
-                res.status(401).send({status: 401, message: "Incorrect username or password"});
-                return;
-            }
-            res.send({status: 200, message: "Success", data: data.rows});
-        })
-        .catch((e: Error) => {
-            console.log(e.message);
-            res.status(500).send({status: 500, message: `Internal server error: ${e.message}`});
-        });
-};
+}
