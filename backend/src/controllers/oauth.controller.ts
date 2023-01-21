@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { QueryResult } from 'pg';
 import { db } from '../db';
 import * as jwt from 'jsonwebtoken';
+import { DecodedToken } from '../interfaces/DecodedToken';
 
 interface LoginInfo {
     username?: string;
@@ -57,14 +58,6 @@ export const authorize = async (req: Request, res: Response) => {
             res.status(500).send({status: 500, message: `Internal server error: ${e.message}`});
         });
 };
-
-interface DecodedToken {
-    id: string;
-    scope: string;
-    iat: number;
-    exp: number;
-    iss: string;
-}
 
 export const token = (req: Request, res: Response) => {
     const refresh_token = req.headers.authorization.replace("Bearer ", "");
