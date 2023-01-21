@@ -7,7 +7,7 @@ import {
   Table
 } from "reactstrap";
 
-function App() {
+function Trips() {
   return (
     <Table responsive>
     <thead>
@@ -43,4 +43,4 @@ function App() {
   );
 }
 
-export default App;
+export default Trips;
