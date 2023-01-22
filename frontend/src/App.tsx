@@ -1,25 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import {Routes, Route, Navigate} from 'react-router-dom'
+import Logon from './components/logon';
+import Register from './components/register';
+import Home from './components/moves';
+import Trip from './components/boxes';
+import Box from './components/items';
+import Qrpage from './components/qrpage';
 
-function App() {
+import {
+  Button,
+  Table
+} from "reactstrap";
+
+function App(props: any) {
+    const [state, setState] = useState({});
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  <Routes>
+      <Route path="/login" element={<Logon {...props} appState={state}/>}/>
+      <Route path="/register" element={<Register {...props} appState={state}/>}/>
+      <Route path="/home" element={<Home {...props} appState={state}/>}/>
+      <Route path="/trip" element={<Trip {...props} appState={state}/>}/>
+      <Route path="/box" element={<Box {...props} appState={state}/>}/>
+      <Route path="/qrpage" element={<Qrpage {...props} appState={state}/>}/>
+  </Routes>
   );
 }
 
