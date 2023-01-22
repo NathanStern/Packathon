@@ -1,26 +1,41 @@
-import express, { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { QueryResult } from 'pg';
 import { db } from '../db';
-import * as jwt from 'jsonwebtoken';
-import { DecodedToken } from '../interfaces/DecodedToken';
+import { userIdScraper } from '../util/jwtVerifier';
 
 export const get_user_profile = (req: Request, res: Response) => {
-    const auth_token = req.headers.authorization.replace("Bearer ", "");
+    const user_id = userIdScraper(req.headers.authorization);
 
-    jwt.verify(auth_token, process.env.jwtsecret, (err, decoded: DecodedToken) => {
-        if (err || decoded.scope !== "user") {
-            res.status(401).send({status: 401, message: "Invalid auth token", err: err.message});
-            return;
-        }
-
-        db.query('SELECT username, email FROM users WHERE id=$1', [decoded.id])
-            .then((data: QueryResult) => {
-                res.send({status: 200, message: "Success", data: data.rows[0]});
-            })
-            .catch((e: Error) => {
-                console.log(e.message);
-                res.status(500).send({status: 500, message: `Internal server error: ${e.message}`});
-            });
-    });
-
+    db.query('SELECT username, email FROM users WHERE id=$1', [user_id])
+        .then((data: QueryResult) => {
+            res.send({ status: 200, message: "Success", data: data.rows[0] });
+        })
+        .catch((e: Error) => {
+            console.log(e.message);
+            res.status(500).send({ status: 500, message: `Internal server error: ${e.message}` });
+        });
 }
+
+interface RegistrationRequest {
+    username: string;
+    email: string;
+    password: string;
+};
+
+export const create_user = (req: Request, res: Response) => {
+    const registration_info: RegistrationRequest = req.body;
+
+    if (!registration_info.username || !registration_info.email || !registration_info.password) {
+        res.status(400).send({ status: 400, message: "Invalid request" });
+        return;
+    }
+
+    db.query('INSERT INTO users (username, email, password) VALUES ($1, $2, $3)', [registration_info.username, registration_info.email, registration_info.password])
+        .then((data: QueryResult) => {
+            res.send({ status: 200, message: "Success" });
+        })
+        .catch((e: Error) => {
+            console.log(e.message);
+            res.status(500).send({ status: 500, message: `Internal server error: ${e.message}` });
+        });
+};

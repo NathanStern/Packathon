@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { db } from './db';
 import { user_routes } from './routes/user.routes';
 import { oauth_routes } from './routes/oauth.routes';
+import { project_routes } from './routes/project.routes';
 
 dotenv.config();
 const app = express();
@@ -28,6 +29,7 @@ app.get('/db-test', (req, res) => {
 // set up routers
 user_routes(app);
 oauth_routes(app);
+project_routes(app);
 
 app.listen(port, () => {
   console.log(`Application is running on port ${port}.`);
