@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./../assets/css/nucleo-icons.css";
 import "./../assets/css/blk-design-system-react.css";
 import "./../assets/css/blk-design-system-react.css.map";
@@ -13,8 +13,41 @@ import {
   Card,
   CardBody
 } from "reactstrap";
+import axios from "axios";
+
+async function handleRegister(username: string, email: string, password: string, confirmPassword: string) {
+  if (password !== confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
+  axios.request({
+    method: 'post',
+    url: 'http://localhost:3030/user/create',
+    headers: {
+      'Application-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    data: {
+      username: username,
+      email: email,
+      password: password
+    }
+  }).then((response) => {
+    console.log(response);
+    window.location.href = '/login';
+  })
+  .catch((err) => {
+    console.log(err);
+    alert(err.message);
+  });
+}
 
 const Register = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [verifyPassword, setVerifyPassword] = useState("");
+
   return (
         <Card>
           <CardBody>
@@ -26,6 +59,7 @@ const Register = () => {
                   name="username"
                   id="uname"
                   placeholder="Select Username"
+                  onChange={(e) => {setUsername(e.target.value)}}
                   />
               </FormGroup>
               <FormGroup>
@@ -35,6 +69,7 @@ const Register = () => {
                   name="email"
                   id="exampleEmail"
                   placeholder="Enter email"
+                  onChange={(e) => {setEmail(e.target.value)}}
                 />
                 <FormText color="muted">
                   We'll never share your email with anyone else.
@@ -48,6 +83,7 @@ const Register = () => {
                   id="examplePassword"
                   placeholder="Password"
                   autoComplete="off"
+                  onChange={(e) => {setPassword(e.target.value)}}
                 />
               </FormGroup>
               <FormGroup>
@@ -58,10 +94,14 @@ const Register = () => {
                   id="confirmPassword"
                   placeholder="Confirm Password"
                   autoComplete="off"
+                  onChange={(e) => {setVerifyPassword(e.target.value)}}
                 />
               </FormGroup>
               
-              <Button color="primary" type="submit">
+              <Button color="primary" type="submit" onClick={(e) => {
+                e.preventDefault();
+                handleRegister(username, email, password, verifyPassword);
+              }}>
                 Register
               </Button>
             </form>

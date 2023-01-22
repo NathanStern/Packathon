@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./../assets/css/nucleo-icons.css";
 import "./../assets/css/blk-design-system-react.css";
 import "./../assets/css/blk-design-system-react.css.map";
@@ -15,10 +15,34 @@ import {
   Card,
   CardBody
 } from "reactstrap";
+import axios from "axios";
 
 
-function handleLogin() {
-  window.location.href = '/home'
+function handleLogin(email: string, password: string, stateChanger: Function) {
+  let body = {
+    email: email,
+    password: password
+  }
+  console.table(body);
+  axios.request({
+    method: 'post',
+    url: 'http://localhost:3030/oauth/authorize?response_type=token',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    data: {...body}
+  }).then((response) => {
+    console.log(response.data.token);
+    localStorage.setItem('access_token', response.data.token);
+    localStorage.setItem('refresh_token', response.data.refresh_token);
+    stateChanger({access_token: response.data.token, refresh_token: response.data.refresh_token});
+    window.location.href = '/home'
+  })
+  .catch((err) => {
+    console.log(err);
+    alert("An error occurred");
+  });
 }
 
 function handleRegister() {
@@ -26,6 +50,9 @@ function handleRegister() {
 }
 
 const Logon = (props: any) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <Card>
       <CardBody>
@@ -37,6 +64,7 @@ const Logon = (props: any) => {
               name="email"
               id="exampleEmail"
               placeholder="Enter email"
+              onChange={(e) => {setEmail(e.target.value)}}
             />
             <FormText color="muted">
               We'll never share your email with anyone else.
@@ -50,6 +78,7 @@ const Logon = (props: any) => {
               id="examplePassword"
               placeholder="Password"
               autoComplete="off"
+              onChange={(e) => {setPassword(e.target.value)}}
             />
           </FormGroup>
           <FormGroup check>
@@ -61,7 +90,7 @@ const Logon = (props: any) => {
             </span>
             </Label>
           </FormGroup>
-          <Button onClick={handleLogin} color="primary" type="submit">
+          <Button onClick={(e) => {e.preventDefault(); handleLogin(email, password, props.stateChanger)}} color="primary" type="submit">
             Log In
           </Button>
         </form>
