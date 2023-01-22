@@ -28,7 +28,6 @@ function handleQR() {
 function Trip() {
     const [modalState, setModalState] = useState({isOpen: false});
     return (
-        
         <>
             <>
                 <Navbar className="navbar-dark bg-primary">

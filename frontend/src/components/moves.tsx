@@ -22,6 +22,7 @@ import {
 
 function Home() {
     const [modalState, setModalState] = useState({isOpen: false});
+    const [userModalState, setUserModalState] = useState({isOpen: false});
     return (
         <>
             <>
@@ -53,7 +54,7 @@ function Home() {
                         <td>Purdue</td>
                         <td className="text-right">15</td>
                         <td className="text-right">
-                            <Button className="btn-icon" color="info" size="sm">
+                            <Button onClick={() => setUserModalState({isOpen: !userModalState.isOpen})} className="btn-icon" color="info" size="sm">
                                 <i className="fa fa-user"></i>
                             </Button>{` `}
                             <Button className="btn-icon" color="success" size="sm">
@@ -104,6 +105,39 @@ function Home() {
         </Button>
         <Button color="primary">
             Save changes
+        </Button>
+    </ModalFooter>
+</Modal>
+<Modal isOpen={userModalState.isOpen} toggle={() => setUserModalState({isOpen: !userModalState.isOpen})}>
+    <div className="modal-header">
+      <h5 className="modal-title" id="exampleModalLabel">
+        Add User
+      </h5>
+      <button
+        type="button"
+        className="close"
+        data-dismiss="modal"
+        aria-hidden="true"
+        onClick={() => setUserModalState({isOpen: !userModalState.isOpen})}
+      >
+        <i className="tim-icons icon-simple-remove" />
+      </button>
+    </div>
+    <ModalBody color="primary">
+    <Card>
+        <CardBody>
+        <form>
+                <Input type="text" placeholder="Username" />
+          </form>
+        </CardBody>
+      </Card>
+    </ModalBody>
+    <ModalFooter>
+        <Button color="secondary" onClick={() => setUserModalState({isOpen: !userModalState.isOpen})}>
+            Close
+        </Button>
+        <Button color="primary">
+            Add
         </Button>
     </ModalFooter>
 </Modal>
