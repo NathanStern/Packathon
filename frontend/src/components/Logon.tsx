@@ -27,14 +27,13 @@ function handleLogin(email: string, password: string, stateChanger: Function) {
   console.table(body);
   axios.request({
     method: 'post',
-    url: 'https://nathans-macbook-pro.local:3030/oauth/authorize?response_type=token',
+    url: 'http://nathans-macbook-pro.local:3030/oauth/authorize?response_type=token',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
     data: {...body},
     httpsAgent: new https.Agent({
-      rejectUnauthorized: false
   })
   }).then((response) => {
     console.log(response.data.token);

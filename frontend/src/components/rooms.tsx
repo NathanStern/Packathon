@@ -31,7 +31,7 @@ function handleQR() {
 function getRooms(project_id: string, state: any, callback: Function) {
     axios.request({
         method: 'GET',
-        url: `https://nathans-macbook-pro.local:3030/room/list?project_id=${project_id}`,
+        url: `http://nathans-macbook-pro.local:3030/room/list?project_id=${project_id}`,
         headers: {
             'Application-Type': 'application/json',
             'Accept': 'application/json',
@@ -53,7 +53,7 @@ function getRooms(project_id: string, state: any, callback: Function) {
 function createRoom(roomName: string, project_id: string, state: any, callback: Function) {
     axios.request({
         method: 'POST',
-        url: `https://nathans-macbook-pro.local:3030/room/create`,
+        url: `http://nathans-macbook-pro.local:3030/room/create`,
         headers: {
             'Application-Type': 'application/json',
             'Accept': 'application/json',
