@@ -7,13 +7,15 @@ import { project_routes } from './routes/project.routes';
 import { room_routes } from './routes/room.routes';
 import { box_routes } from './routes/box.routes';
 import { item_routes } from './routes/item.routes';
+import cors from 'cors';
 
 dotenv.config();
 const app = express();
-const port = 3000;
+const port = process.env.port || 3000;
 
 app.use(express.urlencoded());
 app.use(express.json());
+app.use(cors());
 
 app.get('/hello', (req: Request, res: Response) => {
   let name = req.query.name;

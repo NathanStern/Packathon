@@ -147,23 +147,29 @@ export const get_user_projects = (req: Request, res: Response) => {
     const query_string = `
         SELECT
             p.id as project_id,
-            p.name as name
+            p.name as name,
+            u.username as owner
         FROM
-            projects p
+            projects p,
+            users u
         WHERE
             p.user_id = $1
+            AND p.user_id = u.id
         
         UNION
 
         SELECT
             p.id as project_id,
-            p.name as name
+            p.name as name,
+            u.username as owner
         FROM
             projects p,
-            allowlist a
+            allowlist a,
+            users u
         WHERE
             a.user_id = $1
             AND a.project_id = p.id
+            AND p.user_id = u.id
     `;
 
     const query_values = [user_id];

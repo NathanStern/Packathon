@@ -25,6 +25,7 @@ export const authorize = async (req: Request, res: Response) => {
     }
 
     if (!login_request.password || (!login_request.email && !login_request.username)) {
+        console.table(login_request);
         res.status(400).send({status: 400, message: "Invalid request"});
         return;
     }
