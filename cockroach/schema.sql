@@ -32,6 +32,6 @@ create table items (
     id serial primary key,
     name varchar(255) not null,
     qty int not null,
-    photo_url varchar(255) not null,
+    photo_url varchar(255) not null default '',
     box_id int not null references boxes(id)
 );
