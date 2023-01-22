@@ -11,11 +11,14 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "axios": "^1.2.3",
+    "https": "^1.0.0",
+    "https-browserify": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-qr-code": "^2.0.11",
+    "react-qr-reader": "^2.2.1",
     "react-router-dom": "^6.7.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^4.0.3",
     "react-to-print": "^2.14.11",
     "reactstrap": "^9.1.5",
     "sass": "^1.57.1",
@@ -23,7 +26,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import https from 'https';
 import "./../assets/css/nucleo-icons.css";
 import "./../assets/css/blk-design-system-react.css";
 import "./../assets/css/blk-design-system-react.css.map";
@@ -22,7 +23,7 @@ async function handleRegister(username: string, email: string, password: string,
   }
   axios.request({
     method: 'post',
-    url: 'http://localhost:3030/user/create',
+    url: 'https://nathans-macbook-pro.local:3030/user/create',
     headers: {
       'Application-Type': 'application/json',
       'Accept': 'application/json'
@@ -31,10 +32,13 @@ async function handleRegister(username: string, email: string, password: string,
       username: username,
       email: email,
       password: password
-    }
+    },
+    httpsAgent: new https.Agent({
+      rejectUnauthorized: false
+  })
   }).then((response) => {
     console.log(response);
-    window.location.href = '/login';
+    window.location.href = '/';
   })
   .catch((err) => {
     console.log(err);

@@ -12,18 +12,20 @@ import {
   Table
 } from "reactstrap";
 import Room from './components/rooms';
+import QrScanner from './components/qrscan';
 
 function App(props: any) {
     const [state, setState] = useState({access_token: localStorage.getItem("access_token"), refresh_token: localStorage.getItem("refresh_token")});
   return (
   <Routes>
-      <Route path="/login" element={<Logon {...props} appState={state} stateChanger={setState}/>}/>
       <Route path="/register" element={<Register {...props} appState={state}/>}/>
       <Route path="/home" element={<Home {...props} appState={state}/>}/>
       <Route path="/room" element={<Room {...props} appState={state}/>}/>
       <Route path="/trip" element={<Trip {...props} appState={state}/>}/>
       <Route path="/box" element={<Box {...props} appState={state}/>}/>
       <Route path="/qrpage" element={<Qrpage {...props} appState={state}/>}/>
+      <Route path="/qrscan" element={<QrScanner {...props} appState={state}/>}/>
+      <Route path="/" element={<Logon {...props} appState={state} stateChanger={setState}/>}/>
   </Routes>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import https from 'https';
 import "./../assets/css/nucleo-icons.css";
 import "./../assets/css/blk-design-system-react.css";
 import "./../assets/css/blk-design-system-react.css.map";
@@ -25,12 +26,15 @@ import axios from 'axios';
 async function getUserProjects(state: any, callback: Function) {
   const projects = (await axios.request({
     method: 'get',
-    url: 'http://localhost:3030/project/list',
+    url: 'https://nathans-macbook-pro.local:3030/project/list',
     headers: {
       'Application-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': `Bearer ${state.access_token}`
-    }
+    },
+    httpsAgent: new https.Agent({
+      rejectUnauthorized: false
+  })
   })).data.data;
   console.log(projects)
   callback(projects);
@@ -39,7 +43,7 @@ async function getUserProjects(state: any, callback: Function) {
 function createProject(projectName: string, state: any, callback: Function) {
   axios.request({
     method: 'post',
-    url: 'http://localhost:3030/project/create',
+    url: 'https://nathans-macbook-pro.local:3030/project/create',
     headers: {
       'Application-Type': 'application/json',
       'Accept': 'application/json',
@@ -47,21 +51,24 @@ function createProject(projectName: string, state: any, callback: Function) {
     },
     data: {
       name: projectName
-    }
+    },
+    httpsAgent: new https.Agent({
+      rejectUnauthorized: false
+  })
   }).then((response) => {
     console.log(response.data);
     callback();
   })
-  .catch((err) => {
-    console.log(err);
-    alert(err.message);
-  });
+    .catch((err) => {
+      console.log(err);
+      alert(err.message);
+    });
 }
 
 function allowlistUser(email: string, project_id: string, callback: Function) {
   axios.request({
     method: 'post',
-    url: 'http://localhost:3030/project/add',
+    url: 'https://nathans-macbook-pro.local:3030/project/add',
     headers: {
       'Application-Type': 'application/json',
       'Accept': 'application/json',
@@ -70,7 +77,10 @@ function allowlistUser(email: string, project_id: string, callback: Function) {
     data: {
       email: email,
       project_id: project_id
-    }
+    },
+    httpsAgent: new https.Agent({
+      rejectUnauthorized: false
+  })
   }).then((response) => {
     console.log(response.data);
     callback();
@@ -105,6 +115,12 @@ function Home(props: any) {
               Welcome, These are your pending moves!
             </span>
           </Container>
+          <Button onClick={(e) => {
+            e.preventDefault();
+            window.location.href = `/qrscan`;
+          }} className="btn-icon" color="info" size="md">
+            <i className="fa fa-qrcode"></i>
+          </Button>{` `}
           <Button onClick={() => {
             setModalState({ isOpen: !modalState.isOpen });
           }} className="btn-icon" color="success" size="md">
@@ -190,7 +206,7 @@ function Home(props: any) {
           <Button color="secondary" onClick={() => setModalState({ isOpen: !modalState.isOpen })}>
             Close
           </Button>
-          <Button color="primary" onSubmit={(e) => {e.preventDefault()}} onClick={(e) => {
+          <Button color="primary" onSubmit={(e) => { e.preventDefault() }} onClick={(e) => {
             e.preventDefault();
             createProject(projectName, props.appState, () => setModalState({ isOpen: !modalState.isOpen }));
             window.location.reload();

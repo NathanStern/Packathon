@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import https from 'https';
 import "./../assets/css/nucleo-icons.css";
 import "./../assets/css/blk-design-system-react.css";
 import "./../assets/css/blk-design-system-react.css.map";
@@ -26,12 +27,15 @@ function handleLogin(email: string, password: string, stateChanger: Function) {
   console.table(body);
   axios.request({
     method: 'post',
-    url: 'http://localhost:3030/oauth/authorize?response_type=token',
+    url: 'https://nathans-macbook-pro.local:3030/oauth/authorize?response_type=token',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
-    data: {...body}
+    data: {...body},
+    httpsAgent: new https.Agent({
+      rejectUnauthorized: false
+  })
   }).then((response) => {
     console.log(response.data.token);
     localStorage.setItem('access_token', response.data.token);
