@@ -1,6 +1,10 @@
 import React from "react";
-import "./assets/css/nucleo-icons.css";
-import "./assets/css/blk-design-system-react.css";
+import "./../assets/css/nucleo-icons.css";
+import "./../assets/css/blk-design-system-react.css";
+import "./../assets/css/blk-design-system-react.css.map";
+import "./../assets/css/blk-design-system-react.min.css";
+
+
 
 import {
   FormGroup,
@@ -12,7 +16,16 @@ import {
   CardBody
 } from "reactstrap";
 
-const Logon = () => {
+
+function handleLogin() {
+  window.location.href = '/home'
+}
+
+function handleRegister() {
+  window.location.href = '/register';
+}
+
+const Logon = (props: any) => {
   return (
     <Card>
       <CardBody>
@@ -48,13 +61,18 @@ const Logon = () => {
             </span>
             </Label>
           </FormGroup>
-          <Button color="primary" type="submit">
+          <Button onClick={handleLogin} color="primary" type="submit">
             Log In
           </Button>
         </form>
+        <Button onClick={handleRegister} color="primary">
+            Register
+          </Button>
       </CardBody>
     </Card>
   );
 };
 
 export default Logon;
+
+

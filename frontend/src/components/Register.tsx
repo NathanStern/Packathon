@@ -1,6 +1,8 @@
 import React from "react";
-import "./assets/css/nucleo-icons.css";
-import "./assets/css/blk-design-system-react.css";
+import "./../assets/css/nucleo-icons.css";
+import "./../assets/css/blk-design-system-react.css";
+import "./../assets/css/blk-design-system-react.css.map";
+import "./../assets/css/blk-design-system-react.min.css";
 
 import {
   FormGroup,

@@ -57,6 +57,7 @@
   --white: #ffffff;
   --neutral: #ffffff;
   --darker: black;
+  --izzy: #ff7c2c;
   --breakpoint-xs: 0;
   --breakpoint-sm: 576px;
   --breakpoint-md: 768px;
@@ -6232,7 +6233,7 @@ a.close.disabled {
   flex-direction: column;
   width: 100%;
   pointer-events: auto;
-  background-color: #ffffff;
+  background-color: #ffc107;
   background-clip: padding-box;
   border: 1px solid rgba(34, 42, 66, 0.2);
   border-radius: 0.2857rem;
@@ -6247,7 +6248,7 @@ a.close.disabled {
   z-index: 1040;
   width: 100vw;
   height: 100vh;
-  background-color: #222a42;
+  background-color: #222af2;
 }
 .modal-backdrop.fade {
   opacity: 0;
@@ -14256,7 +14257,7 @@ img {
 }
 
 .modal-backdrop {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 2, 0.3);
 }
 
 .modal.modal-default .modal-content {

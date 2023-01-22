@@ -1,45 +1,28 @@
-import React from 'react';
-import "./assets/css/nucleo-icons.css";
-import "./assets/css/blk-design-system-react.css";
+import React, { useState } from 'react';
+import {Routes, Route, Navigate} from 'react-router-dom'
+import Logon from './components/logon';
+import Register from './components/register';
+import Home from './components/moves';
+import Trip from './components/boxes';
+import Box from './components/items';
+import Qrpage from './components/qrpage';
 
 import {
   Button,
   Table
 } from "reactstrap";
 
-function App() {
+function App(props: any) {
+    const [state, setState] = useState({});
   return (
-    <Table responsive>
-    <thead>
-        <tr>
-            <th className="text-center">#</th>
-            <th>Name</th>
-            <th>Location</th>
-            <th className="text-right">Boxes</th>
-            <th className="text-right">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td className="text-center">1</td>
-            <td>Andrew Mike</td>
-            <td>Purdue</td>
-            <td className="text-right">15</td>
-            <td className="text-right">
-                <Button className="btn-icon" color="info" size="sm">
-                    <i className="fa fa-user"></i>
-                </Button>{` `}
-                <Button className="btn-icon" color="success" size="sm">
-                    <i className="fa fa-edit"></i>
-                </Button>{` `}
-                <Button className="btn-icon" color="danger" size="sm">
-                    <i className="fa fa-times" />
-                </Button>
-            </td>
-        </tr>
-        
-    </tbody>
-</Table>
+  <Routes>
+      <Route path="/login" element={<Logon {...props} appState={state}/>}/>
+      <Route path="/register" element={<Register {...props} appState={state}/>}/>
+      <Route path="/home" element={<Home {...props} appState={state}/>}/>
+      <Route path="/trip" element={<Trip {...props} appState={state}/>}/>
+      <Route path="/box" element={<Box {...props} appState={state}/>}/>
+      <Route path="/qrpage" element={<Qrpage {...props} appState={state}/>}/>
+  </Routes>
   );
 }
 
