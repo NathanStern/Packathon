@@ -23,7 +23,7 @@ async function handleRegister(username: string, email: string, password: string,
   }
   axios.request({
     method: 'post',
-    url: 'https://nathans-macbook-pro.local:3030/user/create',
+    url: 'http://nathans-macbook-pro.local:3030/user/create',
     headers: {
       'Application-Type': 'application/json',
       'Accept': 'application/json'

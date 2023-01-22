@@ -26,7 +26,7 @@ import axios from 'axios';
 async function getUserProjects(state: any, callback: Function) {
   const projects = (await axios.request({
     method: 'get',
-    url: 'https://nathans-macbook-pro.local:3030/project/list',
+    url: 'http://nathans-macbook-pro.local:3030/project/list',
     headers: {
       'Application-Type': 'application/json',
       'Accept': 'application/json',
@@ -43,7 +43,7 @@ async function getUserProjects(state: any, callback: Function) {
 function createProject(projectName: string, state: any, callback: Function) {
   axios.request({
     method: 'post',
-    url: 'https://nathans-macbook-pro.local:3030/project/create',
+    url: 'http://nathans-macbook-pro.local:3030/project/create',
     headers: {
       'Application-Type': 'application/json',
       'Accept': 'application/json',
@@ -68,7 +68,7 @@ function createProject(projectName: string, state: any, callback: Function) {
 function allowlistUser(email: string, project_id: string, callback: Function) {
   axios.request({
     method: 'post',
-    url: 'https://nathans-macbook-pro.local:3030/project/add',
+    url: 'http://nathans-macbook-pro.local:3030/project/add',
     headers: {
       'Application-Type': 'application/json',
       'Accept': 'application/json',

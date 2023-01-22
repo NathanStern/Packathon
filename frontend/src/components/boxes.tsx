@@ -26,7 +26,7 @@ import axios from 'axios';
 function getBoxes(room_id: string, state: any, callback: Function) {
     axios.request({
         method: 'GET',
-        url: `https://nathans-macbook-pro.local:3030/box/list?room_id=${room_id}`,
+        url: `http://nathans-macbook-pro.local:3030/box/list?room_id=${room_id}`,
         headers: {
             'Application-Type': 'application/json',
             'Accept': 'application/json',
@@ -48,7 +48,7 @@ function getBoxes(room_id: string, state: any, callback: Function) {
 function createBox(boxName: string, room_id: string, state: any, callback: Function) {
     axios.request({
         method: 'POST',
-        url: `https://nathans-macbook-pro.local:3030/box/create`,
+        url: `http://nathans-macbook-pro.local:3030/box/create`,
         headers: {
             'Application-Type': 'application/json',
             'Accept': 'application/json',

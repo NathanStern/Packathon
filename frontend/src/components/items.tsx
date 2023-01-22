@@ -26,7 +26,7 @@ import { useLocation } from 'react-router-dom';
 function getItems(box_id: string, state: any, callback: Function) {
   axios.request({
     method: 'GET',
-    url: `https://nathans-macbook-pro.local:3030/item/list?box_id=${box_id}`,
+    url: `http://nathans-macbook-pro.local:3030/item/list?box_id=${box_id}`,
     headers: {
       'Application-Type': 'application/json',
       'Accept': 'application/json',
@@ -48,7 +48,7 @@ function getItems(box_id: string, state: any, callback: Function) {
 function createItem(itemName: string, box_id: string, qty: number, state: any, callback: Function) {
   axios.request({
     method: 'POST',
-    url: `https://nathans-macbook-pro.local:3030/item/create`,
+    url: `http://nathans-macbook-pro.local:3030/item/create`,
     headers: {
       'Application-Type': 'application/json',
       'Accept': 'application/json',
@@ -75,14 +75,13 @@ function createItem(itemName: string, box_id: string, qty: number, state: any, c
 function removeItem(item_id: string, state: any, callback: Function) {
   axios.request({
     method: 'DELETE',
-    url: `https://nathans-macbook-pro.local:3030/item/${item_id}`,
+    url: `http://nathans-macbook-pro.local:3030/item/${item_id}`,
     headers: {
       'Application-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': `Bearer ${state.access_token}`
     },
     httpsAgent: new https.Agent({
-      rejectUnauthorized: false
   })
   }).then((response) => {
     console.log(response.data);

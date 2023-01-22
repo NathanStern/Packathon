@@ -41,12 +41,12 @@ room_routes(app);
 box_routes(app);
 item_routes(app);
 
-https.createServer({
-  key: fs.readFileSync("key.pem"),
-  cert: fs.readFileSync("cert.pem"),
-}, app).listen(port, () => {
-  console.log(`Application is running on port ${port}.`);
-});
-// app.listen(port, () => {
+// https.createServer({
+//   key: fs.readFileSync("key.pem"),
+//   cert: fs.readFileSync("cert.pem"),
+// }, app).listen(port, () => {
 //   console.log(`Application is running on port ${port}.`);
 // });
+app.listen(port, () => {
+  console.log(`Application is running on port ${port}.`);
+});
