@@ -9,6 +9,6 @@ export const db = new Pool({
     database: process.env.sqldatabase,
     password: process.env.sqlpassword,
     port: Number(process.env.sqlport),
-    ssl: true,
+    ssl: false,
     max: 15
 });
