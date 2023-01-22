@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import https from 'https';
 import { useLocation } from 'react-router-dom';
 import "./../assets/css/nucleo-icons.css";
 import "./../assets/css/blk-design-system-react.css";
@@ -30,12 +31,15 @@ function handleQR() {
 function getRooms(project_id: string, state: any, callback: Function) {
     axios.request({
         method: 'GET',
-        url: `http://localhost:3030/room/list?project_id=${project_id}`,
+        url: `https://nathans-macbook-pro.local:3030/room/list?project_id=${project_id}`,
         headers: {
             'Application-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': `Bearer ${state.access_token}`
-        }
+        },
+        httpsAgent: new https.Agent({
+            rejectUnauthorized: false
+        })
     }).then((response) => {
         console.log(response.data);
         callback(response.data.data);
@@ -49,7 +53,7 @@ function getRooms(project_id: string, state: any, callback: Function) {
 function createRoom(roomName: string, project_id: string, state: any, callback: Function) {
     axios.request({
         method: 'POST',
-        url: `http://localhost:3030/room/create`,
+        url: `https://nathans-macbook-pro.local:3030/room/create`,
         headers: {
             'Application-Type': 'application/json',
             'Accept': 'application/json',
@@ -58,7 +62,10 @@ function createRoom(roomName: string, project_id: string, state: any, callback: 
         data: {
             name: roomName,
             project_id: project_id
-        }
+        },
+        httpsAgent: new https.Agent({
+            rejectUnauthorized: false
+        })
     }).then((response) => {
         console.log(response.data);
         callback();
@@ -94,6 +101,12 @@ function Room(props: any) {
                                 For The Move to [REDACTED]
                             </span>
                         </Container>
+                        <Button onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = `/qrscan`;
+                    }} className="btn-icon" color="info" size="md">
+                        <i className="fa fa-qrcode"></i>
+                    </Button>{` `}
                         <Button onClick={() => setModalState({ isOpen: !modalState.isOpen })} className="btn-icon" color="success" size="md">
                             <i className="fa fa-plus" />
                         </Button>

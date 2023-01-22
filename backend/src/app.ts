@@ -7,6 +7,8 @@ import { project_routes } from './routes/project.routes';
 import { room_routes } from './routes/room.routes';
 import { box_routes } from './routes/box.routes';
 import { item_routes } from './routes/item.routes';
+import https from 'https';
+import fs from 'fs';
 import cors from 'cors';
 
 dotenv.config();
@@ -20,14 +22,14 @@ app.use(cors());
 app.get('/hello', (req: Request, res: Response) => {
   let name = req.query.name;
   if (name) {
-    res.send({message: `Hello ${name}`});
+    res.send({ message: `Hello ${name}` });
   }
 });
 
 app.get('/db-test', (req, res) => {
   db.query('SHOW TABLES;', (err, data) => {
     console.log(err, data);
-    res.send({err: err, data: data.rows});
+    res.send({ err: err, data: data.rows });
   });
 })
 
@@ -39,6 +41,12 @@ room_routes(app);
 box_routes(app);
 item_routes(app);
 
-app.listen(port, () => {
+https.createServer({
+  key: fs.readFileSync("key.pem"),
+  cert: fs.readFileSync("cert.pem"),
+}, app).listen(port, () => {
   console.log(`Application is running on port ${port}.`);
 });
+// app.listen(port, () => {
+//   console.log(`Application is running on port ${port}.`);
+// });

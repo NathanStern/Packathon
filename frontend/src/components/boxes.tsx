@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import https from 'https'
 import "./../assets/css/nucleo-icons.css";
 import "./../assets/css/blk-design-system-react.css";
 import "./../assets/css/blk-design-system-react.css.map";
@@ -22,20 +23,18 @@ import {
 } from "reactstrap";
 import axios from 'axios';
 
-
-function handleQR() {
-    window.location.href = '/qrpage'
-}
-
 function getBoxes(room_id: string, state: any, callback: Function) {
     axios.request({
         method: 'GET',
-        url: `http://localhost:3030/box/list?room_id=${room_id}`,
+        url: `https://nathans-macbook-pro.local:3030/box/list?room_id=${room_id}`,
         headers: {
             'Application-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': `Bearer ${state.access_token}`
-        }
+        },
+        httpsAgent: new https.Agent({
+            rejectUnauthorized: false
+        })
     }).then((response) => {
         console.log(response.data);
         callback(response.data.data);
@@ -49,7 +48,7 @@ function getBoxes(room_id: string, state: any, callback: Function) {
 function createBox(boxName: string, room_id: string, state: any, callback: Function) {
     axios.request({
         method: 'POST',
-        url: `http://localhost:3030/box/create`,
+        url: `https://nathans-macbook-pro.local:3030/box/create`,
         headers: {
             'Application-Type': 'application/json',
             'Accept': 'application/json',
@@ -58,15 +57,18 @@ function createBox(boxName: string, room_id: string, state: any, callback: Funct
         data: {
             name: boxName,
             room_id: room_id
-        }
+        },
+        httpsAgent: new https.Agent({
+            rejectUnauthorized: false
+        })
     }).then((response) => {
         console.log(response.data);
         callback();
     })
-    .catch((err) => {
-        console.log(err);
-        alert(err.message);
-    });
+        .catch((err) => {
+            console.log(err);
+            alert(err.message);
+        });
 }
 
 function Trip(props: any) {
@@ -80,8 +82,8 @@ function Trip(props: any) {
         // get the search params object
         const params = new URLSearchParams(location.search);
 
-        getBoxes(params.get('room_id')?? "", props.appState, setBoxes);
-        setRoomId(params.get('room_id')?? "");
+        getBoxes(params.get('room_id') ?? "", props.appState, setBoxes);
+        setRoomId(params.get('room_id') ?? "");
     }, []);
 
     return (
@@ -93,6 +95,12 @@ function Trip(props: any) {
                             Boxes in Room: [REDACTED]
                         </span>
                     </Container>
+                    <Button onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = `/qrscan`;
+                    }} className="btn-icon" color="info" size="md">
+                        <i className="fa fa-qrcode"></i>
+                    </Button>{` `}
                     <Button onClick={() => setModalState({ isOpen: !modalState.isOpen })} className="btn-icon" color="success" size="md">
                         <i className="fa fa-plus" />
                     </Button>
@@ -118,7 +126,10 @@ function Trip(props: any) {
                                     }}>
                                         <i className="fa fa-edit"></i>
                                     </Button>{` `}
-                                    <Button onClick={handleQR} className="btn-icon" color="info" size="md">
+                                    <Button onClick={(e) => {
+                                        e.preventDefault();
+                                        window.location.href = `/qrpage?box_id=${box.id}`;
+                                    }} className="btn-icon" color="info" size="md">
                                         <i className="fa fa-qrcode"></i>
                                     </Button>{` `}
                                     <Button className="btn-icon" color="danger" size="md">
